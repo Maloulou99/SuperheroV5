@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <link th:href="@{style.css}" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Superpowers</title>
+</head>
+
+<body>
+<div class="container">
+  <h1>Superpowers</h1>
+
+  <table>
+    <tbody>
+    <th th:each="superpower : ${superpowers}" th:text="${superpower}"> </th>
+    </tbody>
+  </table>
+
+  <form>
+    <input type="button" value="Go back!" onclick="history.back()">
+  </form>
+
+
+</div>
+</body>
+
+</html>

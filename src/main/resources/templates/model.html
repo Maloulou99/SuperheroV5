@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+    <link th:href="@{style.css}" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+</head>
+<body>
+<div class="container">
+    <h1>Superheroes</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Hero Name</th>
+            <th>Hero Realname</th>
+            <th>Creation Year</th>
+            <th>Superpowers</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="hero : ${getAllHeroes}">
+            <td th:text="${hero.hero_Name}"></td>
+            <td th:text="${hero.real_Name}"></td>
+            <td th:text="${hero.creation_year}"></td>
+            <td>
+                <a th:href="@{super/powers(name=${hero.hero_Name})}">
+                    <button>Superpowers</button>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+</body>
+</html>
