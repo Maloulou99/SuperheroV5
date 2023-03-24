@@ -43,7 +43,7 @@ public class SuperheroController {
     public String addSuperhero2(@ModelAttribute("superhero") Superhero superhero, Model model) {
         service.createSuperhero(superhero);
         model.addAttribute("message", "Superhelt tilføjet med succes!");
-        return "redirect:/";
+        return "redirect:super/add";
     }
 
     @PostMapping("/update")

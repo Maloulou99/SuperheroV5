@@ -100,6 +100,7 @@ public class SuperheroRepository {
 
     public void createSuperhero(Superhero superhero) {
         List<Integer> powerList = new ArrayList<>();
+        int hero_id = 0;
         int city_id = 0;
         try (Connection con = DriverManager.getConnection(url, uid, pwd)) {
 
@@ -119,6 +120,13 @@ public class SuperheroRepository {
                 powerList.add(rs1.getInt("superpower_id"));
             }
 
+            PreparedStatement stmt6 = con.prepareStatement("SELECT hero_id FROM superhero_superpower WHERE hero_id = ?");
+            stmt6.setInt(1, superhero.getId());
+            ResultSet rs2 = stmt6.executeQuery();
+            if (rs.next()){
+                hero_id = rs2.getInt("hero_id");
+            }
+
             PreparedStatement stmt1 = con.prepareStatement("INSERT INTO superhero(hero_name, real_name, creation_year, city_id) VALUES (?, ?, ?, ?)");
             stmt1.setString(1, superhero.getHero_Name());
             stmt1.setString(2, superhero.getReal_Name());
@@ -126,9 +134,10 @@ public class SuperheroRepository {
             stmt1.setInt(4, city_id);
             stmt1.executeUpdate();
 
-            PreparedStatement stmt2 = con.prepareStatement("INSERT INTO superpower(superpower) VALUES (?)");
+            PreparedStatement stmt2 = con.prepareStatement("INSERT INTO superpower(superpower) VALUES (?, ?)");
             for (int i = 0; i < powerList.size(); i++) {
                 stmt2.setInt(1, powerList.get(i));
+                stmt2.setInt(2, hero_id);
                 stmt2.executeUpdate();
             }
 
