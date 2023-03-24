@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -72,28 +73,71 @@ public class SuperheroRepository {
     }
 
 
-    public void addSuperhero(Superhero superhero) {
-        for (int i = 0; i < superheroes.size(); i++) {
-            superheroes.add(0, superhero);
-        }
-    }
-
-
-    public void updateSuperhero(Superhero superhero) {
-        for (int i = 0; i < superheroes.size(); i++) {
-            if (superheroes.get(i).getId() == superhero.getId()) {
-                superheroes.set(i, superhero);
-                break;
-            }
-        }
-    }
-
     public void deleteSuperhero(int id) {
         for (int i = 0; i < superheroes.size(); i++) {
             if (superheroes.get(i).getId() == id) {
                 superheroes.remove(i);
                 break;
             }
+        }
+    }
+
+    public void updateSuperhero(Superhero superhero) {
+        try (Connection con = DriverManager.getConnection(url, uid, pwd)) {
+            PreparedStatement stmt = con.prepareStatement(
+                    "UPDATE superheroes SET hero_name=?, real_name=?, creation_year=?, superpowers=?, city=?, WHERE id=?");
+            stmt.setString(1, superhero.getHero_Name());
+            stmt.setString(2, superhero.getReal_Name());
+            stmt.setString(3, superhero.getCreation_year());
+            stmt.setString(4, superhero.getSuperpower());
+            stmt.setString(5, superhero.getCitiesDTO().getCityName());
+            stmt.setInt(6, superhero.getId());
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public void createSuperhero(Superhero superhero) {
+        List<Integer> powerList = new ArrayList<>();
+        int city_id = 0;
+        try (Connection con = DriverManager.getConnection(url, uid, pwd)) {
+
+            PreparedStatement stmt4 = con.prepareStatement("SELECT city_id FROM city WHERE city = ?");
+            stmt4.setString(1, superhero.getCitiesDTO().getCityName());
+            ResultSet rs = stmt4.executeQuery();
+            if (rs.next()) {
+                city_id = rs.getInt("city_id");
+            }
+
+            PreparedStatement stmt5 = con.prepareStatement("SELECT superpower_id FROM superpower WHERE superpower = ?");
+            stmt5.setString(1, superhero.getSuperpowerDTO().getName());
+            ResultSet rs1 = stmt5.executeQuery();
+            for (String power : superhero.getSuperpowerDTO().getSuperPowers())
+                stmt5.setString(1, power);
+            if(rs.next()){
+                powerList.add(rs1.getInt("superpower_id"));
+            }
+
+            PreparedStatement stmt1 = con.prepareStatement("INSERT INTO superhero(hero_name, real_name, creation_year, city_id) VALUES (?, ?, ?, ?)");
+            stmt1.setString(1, superhero.getHero_Name());
+            stmt1.setString(2, superhero.getReal_Name());
+            stmt1.setString(3, superhero.getCreation_year());
+            stmt1.setInt(4, city_id);
+            stmt1.executeUpdate();
+
+            PreparedStatement stmt2 = con.prepareStatement("INSERT INTO superpower(superpower) VALUES (?)");
+            for (int i = 0; i < powerList.size(); i++) {
+                stmt2.setInt(1, powerList.get(i));
+                stmt2.executeUpdate();
+            }
+
+            PreparedStatement stmt3 = con.prepareStatement("INSERT INTO city(city) VALUES (?)");
+            stmt3.setString(1, superhero.getCitiesDTO().getCityName());
+            stmt3.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println(e);
         }
     }
 

@@ -56,6 +56,12 @@ label {
     width: 150px;
 }
 
+h3{
+    font-weight: bold;
+    text-align: center;
+    font-family: sans-serif;
+}
+
 
 input[type="text"],
 input[type="number"],

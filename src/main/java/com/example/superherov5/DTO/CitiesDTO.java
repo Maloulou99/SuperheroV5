@@ -1,27 +1,46 @@
 package com.example.superherov5.DTO;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CitiesDTO {
-    private String name;
+    private String cityName;
+    private int city_id;
+    private String selectedValue;
     private List<String> cities;
 
-    public CitiesDTO(String name, List<String> cities) {
-        this.name = name;
+
+    public CitiesDTO(String cityName, List<String> cities) {
+        this.cityName = cityName;
         this.cities = cities;
     }
+    public CitiesDTO() {}
 
-    public CitiesDTO(String name) {
-        this.name = name;
+    public int getCity_id() {
+        return city_id;
     }
 
-    public String getName() {
-        return name;
+    public String getSelectedValue() {
+        return selectedValue;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setSelectedValue(String selectedValue) {
+        this.selectedValue = selectedValue;
+    }
+
+    public void setCity_id(int city_id) {
+        this.city_id = city_id;
+    }
+
+    public CitiesDTO(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
     }
 
     public List<String> getCities() {
@@ -35,7 +54,7 @@ public class CitiesDTO {
     @Override
     public String toString() {
         return "CitiesDTO{" +
-                "name='" + name + '\'' +
+                "name='" + cityName + '\'' +
                 ", cities=" + cities +
                 '}';
     }

@@ -27,8 +27,8 @@ public class SuperheroService {
         return superheroRepository.getSuperheroById(id);
     }
 
-    public void addSuperhero(Superhero superhero){
-        superheroRepository.addSuperhero(superhero);
+    public void createSuperhero(Superhero superhero){
+        superheroRepository.createSuperhero(superhero);
     }
 
     public void updateSuperhero(Superhero superhero){

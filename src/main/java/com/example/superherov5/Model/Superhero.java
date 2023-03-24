@@ -1,10 +1,18 @@
 package com.example.superherov5.Model;
 
+import com.example.superherov5.DTO.CitiesDTO;
+import com.example.superherov5.DTO.SuperpowerDTO;
+
+import java.util.ArrayList;
+
 public class Superhero {
     private int id;
     private String hero_Name;
     private String real_Name;
     private String creation_year;
+    private SuperpowerDTO superpowerDTO;
+    private CitiesDTO citiesDTO;
+
 
     //private String selectedValue;
 
@@ -13,6 +21,7 @@ public class Superhero {
         this.hero_Name = heroName;
         this.real_Name = realName;
         this.creation_year = creationYear;
+        this.superpowerDTO = new SuperpowerDTO(heroName, new ArrayList<>());
     }
 
     public Superhero(){
@@ -58,6 +67,17 @@ public class Superhero {
     public void setId(int id) {
         this.id = id;
     }
+    public void setSuperpowerDTO(SuperpowerDTO superpowerDTO) {
+        this.superpowerDTO = superpowerDTO;
+    }
+    public void setCitiesDTO(CitiesDTO citiesDTO){
+        this.citiesDTO = citiesDTO;
+    }
+
+    public CitiesDTO getCitiesDTO() {
+        return citiesDTO;
+    }
+
 
     public String getCreation_year() {
         return creation_year;
@@ -67,15 +87,21 @@ public class Superhero {
         this.creation_year = creation_year;
     }
 
-
-
-    /*public String getSelectedValue() {
-        return selectedValue;
+    public SuperpowerDTO getSuperpowerDTO() {
+        return superpowerDTO;
     }
 
-    public void setSelectedValue(String selectedValue) {
-        this.selectedValue = selectedValue;
-    }*/
+    public String getSuperpower() {
+        return String.join(",", superpowerDTO.getSuperPowers());
+    }
+
+    public void addSuperpower(String superpower) {
+        superpowerDTO.addSuperPower(superpower);
+    }
+
+    public void removeSuperpower(String superpower) {
+        superpowerDTO.removeSuperPower(superpower);
+    }
 
     @Override
     public String toString() {
@@ -83,5 +109,7 @@ public class Superhero {
                 "Real Name: " + real_Name + "\n" +
                 "Creation year: " + creation_year;
     }
+
+
 
 }

@@ -7,17 +7,29 @@ import java.util.List;
 
 public class SuperpowerDTO {
     private String name;
+    private int selectedValue;
     private List<String> superPowers;
 
     public SuperpowerDTO(String name, List<String> superPowers) {
         this.name = name;
         this.superPowers = superPowers;
     }
+    public SuperpowerDTO() {
+        this.name = "";
+        this.superPowers = new ArrayList<String>();
+    }
+
+    public int getSelectedValue() {
+        return selectedValue;
+    }
+
+    public void setSelectedValue(int selectedValue) {
+        this.selectedValue = selectedValue;
+    }
 
     public String getName() {
         return name;
     }
-
 
     public List<String> getSuperPowers() {
         return superPowers;
@@ -42,6 +54,7 @@ public class SuperpowerDTO {
     public void printSuperPowers() {
         System.out.println(superPowers);
     }
+
 
     @Override
     public String toString() {

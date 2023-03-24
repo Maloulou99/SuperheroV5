@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -17,7 +18,6 @@ public class SuperheroController {
     public SuperheroController(SuperheroService service) {
         this.service = service;
     }
-
 
     @GetMapping()
     public String getAllSuperheroes(Model model) {
@@ -33,30 +33,29 @@ public class SuperheroController {
         return "superpower";
     }
 
-    //Lav et nyt endpoint, /add, til oprettelse af en superhelt.
-    // Der skal både laves en getmapping, der returnerer form til oprettelse, og en
-    // postmapping der tilføjer data fra formens modelattribut til backenden.
-
-    @PostMapping("/create")
-    public String createProduct(@RequestParam("name") String navn,
-                                @RequestParam("heroid") int herid,
-                                @RequestParam("creationy") String creationy)
-    {
-        Superhero newProduct = new Superhero();
-        newProduct.setId(herid);
-        newProduct.setHero_Name(navn);
-        newProduct.setCreation_year(creationy);
-
-        service.addSuperhero(newProduct);
-        return "redirect:/";
-    }
-
-    @GetMapping("/")
-    public String index(Model model){
-        model.addAttribute("making", service.getAllSuperheroes());
+    @GetMapping("/add")
+    public String addSuperhero(Model model) {
+        model.addAttribute("superhero", new Superhero());
         return "addsuperhero";
     }
 
+    @PostMapping("/add")
+    public String addSuperhero2(@ModelAttribute("superhero") Superhero superhero, Model model) {
+        service.createSuperhero(superhero);
+        model.addAttribute("message", "Superhelt tilføjet med succes!");
+        return "redirect:/";
+    }
+
+    @PostMapping("/update")
+    public String updateSuperhero(@ModelAttribute("superhero") Superhero superhero, Model model) {
+        service.updateSuperhero(superhero);
+        model.addAttribute("message", "Superhelt opdateret med succes!");
+        return "redirect:.../add";
+    }
+
+
 
 }
+
+
 
