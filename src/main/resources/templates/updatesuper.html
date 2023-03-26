@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:c="http://www.thymeleaf.org/extras/spring-security">
+<html  xmlns:th="http://www.thymeleaf.org" xmlns:c="">
 <head>
+  <link th:href="@{/updatestyle.css}" rel="stylesheet">
   <meta charset="UTF-8">
-  <title>Add Superhero</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+  <title>Update Superhero</title>
+
 </head>
 <body>
 
-<h1>Add Superhero</h1>
+<h1>Update Superhero</h1>
 <form action="/add" method="POST">
   <label for="heroName">Hero Name:</label>
   <input type="text" id="heroName" name="heroName"><br><br>
@@ -18,23 +20,22 @@
   <label for="creationYear">Creation Year:</label>
   <input type="text" id="creationYear" name="creationYear"><br><br>
 
-  <select name="city" id="city">
-    <option value="">--Select a City--</option>
-    <c:forEach var="city" items="${cities}">
-      <option value="${city.id}" th:selected="${superhero.citiesDTO.id == city.id}">${city.name}</option>
-    </c:forEach>
-  </select>
-
-
+  <label for="city"></label><select name="city" id="city">
+  <option value="">--Select a City--</option>
+  <c:forEach var="city" items="${cities}">
+    <option value="${city.name}" th:selected="${superheroForm.city == cities}"></option>
+  </c:forEach>
+</select>
 
   <label for="superpowers">Superpowers:</label>
   <select multiple name="superpowers" id="superpowers">
     <c:forEach var="superpower" items="${allSuperpowers}">
-      <option value="${superpower.id}">${superpower.name}</option>
+      <option value="${superpower.name}">${superpower.name}</option>
     </c:forEach>
   </select><br><br>
 
   <input type="submit" value="Add Superhero">
 </form>
+
 </body>
 </html>

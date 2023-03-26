@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -35,16 +36,19 @@ public class SuperheroController {
         return "superpower";
     }
 
+
+
     @GetMapping("/add")
     public String addSuperhero(Model model) {
-        Superhero superhero = new Superhero();
-        model.addAttribute("superhero", superhero);
+        SuperheroFormDTO superheroForm = new SuperheroFormDTO();
+        model.addAttribute("superheroForm", superheroForm);
 
-        List<String> cityList = service.getCities();
-        model.addAttribute("cityList", cityList);
+        List<CitiesDTO> cities = service.getAllCities();
+        model.addAttribute("cities", cities);
 
-        List<String> powerList = service.getPowers();
-        model.addAttribute("powerList", powerList);
+        List<SuperpowerDTO> superpowers = service.getAllSuperpowers();
+        model.addAttribute("superpowers", superpowers);
+
         return "addsuperhero";
     }
 

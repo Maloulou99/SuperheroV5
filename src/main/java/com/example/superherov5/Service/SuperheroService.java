@@ -1,5 +1,6 @@
 package com.example.superherov5.Service;
 
+import com.example.superherov5.DTO.CitiesDTO;
 import com.example.superherov5.DTO.SuperpowerDTO;
 import com.example.superherov5.Model.Superhero;
 import com.example.superherov5.Repository.SuperheroRepository;
@@ -38,6 +39,13 @@ public class SuperheroService {
 
     public List<String> getPowers(){
         return superheroRepository.getPowers();
+    }
+
+    public List<CitiesDTO> getAllCities() {
+        return superheroRepository.getAllCities();
+    }
+    public List<SuperpowerDTO> getAllSuperpowers() {
+        return superheroRepository.getAllSuperpowers();
     }
 
 }

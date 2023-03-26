@@ -14,17 +14,18 @@ public class Superhero {
     private SuperpowerDTO superpowerDTO;
     private CitiesDTO citiesDTO;
 
+    public Superhero() {
+        this.superpowerDTO = new SuperpowerDTO();
+        this.citiesDTO = new CitiesDTO();
+    }
+
     public Superhero(int id, String heroName, String realName, String creationYear) {
         this.id = id;
         this.hero_Name = heroName;
         this.real_Name = realName;
         this.creation_year = creationYear;
-        if (superpowerDTO == null) {
-            this.superpowerDTO = new SuperpowerDTO(heroName, new ArrayList<>());
-        }
-        if (citiesDTO == null) {
-            this.citiesDTO = new CitiesDTO();
-        }
+        this.superpowerDTO = new SuperpowerDTO(heroName, new ArrayList<>());
+        this.citiesDTO = new CitiesDTO();
     }
 
     public Superhero(int id, String name, List<Integer> superpowers) {
@@ -33,30 +34,33 @@ public class Superhero {
         this.superpowerDTO = new SuperpowerDTO();
     }
 
-    public Superhero() {
-        this.superpowerDTO = new SuperpowerDTO();
-    }
-
-
     public Superhero(String heroName, String realName, String creation_year) {
         this.hero_Name = heroName;
         this.real_Name = realName;
         this.creation_year = creation_year;
+        this.superpowerDTO = new SuperpowerDTO(heroName, new ArrayList<>());
+        this.citiesDTO = new CitiesDTO();
     }
-
 
     public Superhero(String hero_name, String real_name) {
         this.hero_Name = hero_name;
         this.real_Name = real_name;
+        this.superpowerDTO = new SuperpowerDTO(hero_name, new ArrayList<>());
+        this.citiesDTO = new CitiesDTO();
     }
 
     public Superhero(String heroName) {
         this.hero_Name = heroName;
-        this.superpowerDTO = new SuperpowerDTO();
+        this.superpowerDTO = new SuperpowerDTO(heroName, new ArrayList<>());
+        this.citiesDTO = new CitiesDTO();
     }
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getHero_Name() {
@@ -75,11 +79,6 @@ public class Superhero {
         this.real_Name = real_Name;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-
     public String getCreation_year() {
         return creation_year;
     }
@@ -87,7 +86,6 @@ public class Superhero {
     public void setCreation_year(String creation_year) {
         this.creation_year = creation_year;
     }
-
 
     public SuperpowerDTO getSuperpowerDTO() {
         return superpowerDTO;
@@ -105,7 +103,6 @@ public class Superhero {
         this.citiesDTO = citiesDTO;
     }
 
-
     public String getSuperpower() {
         if (superpowerDTO != null) {
             return String.join(",", superpowerDTO.getSuperPowers());
@@ -120,6 +117,7 @@ public class Superhero {
         }
         superpowerDTO.addSuperPower(superpower);
     }
+
 
     public void removeSuperpower(String superpower) {
         if (superpowerDTO != null) {

@@ -1,5 +1,6 @@
 package com.example.superherov5.Repository;
 
+import com.example.superherov5.DTO.CitiesDTO;
 import com.example.superherov5.DTO.SuperpowerDTO;
 import com.example.superherov5.Model.Superhero;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,7 +10,7 @@ import java.sql.*;
 import java.util.*;
 
 @Repository
-public class SuperheroRepository {
+public abstract class SuperheroRepository {
     @Value("${spring.datasource.url}")
     private String url;
     @Value("${spring.datasource.username}")
@@ -162,10 +163,9 @@ public class SuperheroRepository {
     }
 
 
+    public abstract List<CitiesDTO> getAllCities();
 
-
-
-
+    public abstract List<SuperpowerDTO> getAllSuperpowers();
 }
 
 

@@ -1,12 +1,15 @@
 package com.example.superherov5.DTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CitiesDTO {
     private String cityName;
     private int city_id;
     private String selectedValue;
-    private List<String> cities;
+    private List<String> cities = new ArrayList<>();
+
+
 
 
     public CitiesDTO(String cityName, List<String> cities) {

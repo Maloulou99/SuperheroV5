@@ -9,7 +9,7 @@ import java.util.List;
 public class SuperpowerDTO {
     private String name;
     private String selectedValue;
-    private List<String> superPowers;
+    private List<String> superPowers = new ArrayList<>();
 
     public SuperpowerDTO(String name, List<String> superPowers) {
         this.name = name;
@@ -17,13 +17,12 @@ public class SuperpowerDTO {
     }
     public SuperpowerDTO() {
         this.name = "";
-        this.superPowers = new ArrayList<String>();
+        this.superPowers = new ArrayList<>();
     }
 
     public SuperpowerDTO(String power) {
         this.name = power;
     }
-
 
 
     public String getSelectedValue() {

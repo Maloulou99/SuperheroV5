@@ -6,43 +6,36 @@
   <title>Add Superhero</title>
 </head>
 
+<body>
 
-<form th:action="@{/super/add}"  method="post" th:object="${superhero}">
+<form th:action="@{/super/add}" method="post" th:object="${superheroForm}">
   <p>
     <label for="heroName">Hero Name:</label>
-    <input type="text" id="heroName" name="hero_Name" th:field="*{hero_Name}" />
+    <input type="text" id="heroName" name="heroName" th:field="*{heroName}" />
   </p>
   <p>
     <label for="realName">Real Name:</label>
-    <input type="text" id="realName" name="real_Name" th:field="*{real_Name}" />
+    <input type="text" id="realName" name="realName" th:field="*{realName}" />
   </p>
   <p>
     <label for="creationYear">Creation Year:</label>
-    <input type="text" id="creationYear" name="creation_year" th:field="*{creation_year}" />
+    <input type="text" id="creationYear" name="creationYear" th:field="*{creationYear}" />
   </p>
 
   <div>
     <label>Superpowers:</label>
-    <input type="checkbox" th:field="*{superpower}" th:each="sp : ${powerList}" th:value="${sp}" th:text="${sp}" style="margin: 6px"/>
-    <br/><br/>
+    <br/>
+    <div th:each="sp : ${superpowers}">
+      <input type="checkbox" th:field="*{powerList}" th:value="${sp}" th:text="${sp}" style="margin: 6px"/>
+    </div>
     <br/>
   </div>
 
-
   <p>
     <label>City:</label>
-    <select th:field="*{citiesDTO}">
-      <option th:each="c : ${cityList}" th:value="${c}" th:text="${c}"></option>
+    <select th:field="*{city}">
+      <option th:each="c : ${cities}" th:value="${c}" th:text="${c}"></option>
     </select><br/>
-  </p>
-
-  <p>
-    <input type="hidden" id="city_Id" name="selectedValue" th:field="*{citiesDTO.selectedValue}" />
-  </p>
-
-
-  <p>
-  <input type="hidden" id="superpower_id" name="selectedValue" th:field="*{superpowerDTO.selectedValue}"/>
   </p>
 
   <p>
@@ -53,5 +46,4 @@
 
 </body>
 </html>
-
 
