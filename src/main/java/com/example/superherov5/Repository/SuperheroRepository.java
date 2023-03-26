@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Repository
 public class SuperheroRepository {
@@ -19,6 +17,43 @@ public class SuperheroRepository {
     @Value("${spring.datasource.password}")
     private String pwd;
     private List<Superhero> superheroes = new ArrayList<>();
+
+
+    public List<String> getCities() {
+        List<String> cities = new ArrayList<>();
+        try (Connection con = DriverManager.getConnection(url, uid, pwd)) {
+            String SQL = "SELECT * FROM city";
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(SQL);
+
+            while (rs.next()) {
+                String city = rs.getString("city");
+                cities.add(city);
+            }
+            return cities;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<String> getPowers() {
+        List<String> powers = new ArrayList<>();
+        try (Connection con = DriverManager.getConnection(url, uid, pwd)) {
+            String SQL = "Select superpower from  superpower";
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(SQL);
+
+            while (rs.next()) {
+                String power = rs.getString("superpower");
+                powers.add(power);
+            }
+            return powers;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     // En liste med alle superhelte, der indeholder: heroName, realName og creationYear
     public List<Superhero> getAllSuperheroes() {
@@ -40,6 +75,8 @@ public class SuperheroRepository {
         }
         return superheroes;
     }
+
+
 
     public SuperpowerDTO getSuperPowersForSuperhero(String name) {
         List<String> superheroes = new ArrayList<>();
@@ -63,92 +100,71 @@ public class SuperheroRepository {
     }
 
 
-    public Superhero getSuperheroById(int id) {
-        for (Superhero superhero : superheroes) {
-            if (superhero.getId() == id) {
-                return superhero;
-            }
-        }
-        return null;
-    }
-
-
-    public void deleteSuperhero(int id) {
-        for (int i = 0; i < superheroes.size(); i++) {
-            if (superheroes.get(i).getId() == id) {
-                superheroes.remove(i);
-                break;
-            }
-        }
-    }
-
     public void updateSuperhero(Superhero superhero) {
-        try (Connection con = DriverManager.getConnection(url, uid, pwd)) {
-            PreparedStatement stmt = con.prepareStatement(
-                    "UPDATE superheroes SET hero_name=?, real_name=?, creation_year=?, superpowers=?, city=?, WHERE id=?");
-            stmt.setString(1, superhero.getHero_Name());
-            stmt.setString(2, superhero.getReal_Name());
-            stmt.setString(3, superhero.getCreation_year());
-            stmt.setString(4, superhero.getSuperpower());
-            stmt.setString(5, superhero.getCitiesDTO().getCityName());
-            stmt.setInt(6, superhero.getId());
-            stmt.executeUpdate();
-        } catch (Exception e) {
-            System.out.println(e);
+            try (Connection con = DriverManager.getConnection(url, uid, pwd)) {
+                PreparedStatement stmt = con.prepareStatement("INSERT INTO superhero (hero_name, real_name, creation_year, city_id) VALUES (?, ?, ?, (SELECT city_id FROM city WHERE city = ?))");
+                stmt.setString(1, superhero.getHero_Name());
+                stmt.setString(2, superhero.getReal_Name());
+                stmt.setString(3, superhero.getCreation_year());
+                stmt.setString(4, superhero.getCitiesDTO().getCityName());
+                stmt.executeUpdate();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
         }
-    }
 
-    public void createSuperhero(Superhero superhero) {
+
+
+        public void createSuperhero(Superhero superhero) {
         List<Integer> powerList = new ArrayList<>();
         int hero_id = 0;
         int city_id = 0;
         try (Connection con = DriverManager.getConnection(url, uid, pwd)) {
 
-            PreparedStatement stmt4 = con.prepareStatement("SELECT city_id FROM city WHERE city = ?");
-            stmt4.setString(1, superhero.getCitiesDTO().getCityName());
-            ResultSet rs = stmt4.executeQuery();
+            PreparedStatement stmt1 = con.prepareStatement("SELECT city_id FROM city WHERE city = ?");
+            stmt1.setString(1, superhero.getCitiesDTO().getCityName());
+            ResultSet rs = stmt1.executeQuery();
             if (rs.next()) {
                 city_id = rs.getInt("city_id");
             }
 
-            PreparedStatement stmt5 = con.prepareStatement("SELECT superpower_id FROM superpower WHERE superpower = ?");
-            stmt5.setString(1, superhero.getSuperpowerDTO().getName());
-            ResultSet rs1 = stmt5.executeQuery();
-            for (String power : superhero.getSuperpowerDTO().getSuperPowers())
-                stmt5.setString(1, power);
-            if(rs.next()){
-                powerList.add(rs1.getInt("superpower_id"));
+            PreparedStatement stmt2 = con.prepareStatement("INSERT INTO superhero(hero_name, real_name, creation_year, city_id) VALUES (?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            stmt2.setString(1, superhero.getHero_Name());
+            stmt2.setString(2, superhero.getReal_Name());
+            stmt2.setString(3, superhero.getCreation_year());
+            stmt2.setInt(4, city_id);
+            stmt2.executeUpdate();
+            ResultSet rs1 = stmt2.getGeneratedKeys();
+            if (rs1.next()) {
+                hero_id = rs1.getInt(1);
+                superhero.setId(hero_id);
             }
 
-            PreparedStatement stmt6 = con.prepareStatement("SELECT hero_id FROM superhero_superpower WHERE hero_id = ?");
-            stmt6.setInt(1, superhero.getId());
-            ResultSet rs2 = stmt6.executeQuery();
-            if (rs.next()){
-                hero_id = rs2.getInt("hero_id");
+            PreparedStatement stmt3 = con.prepareStatement("SELECT superpower_id FROM superpower WHERE superpower = ?");
+            for (String power : superhero.getSuperpowerDTO().getSuperPowers()) {
+                stmt3.setString(1, power);
+                ResultSet rs2 = stmt3.executeQuery();
+                if (rs2.next()) {
+                    powerList.add(rs2.getInt("superpower_id"));
+                }
             }
 
-            PreparedStatement stmt1 = con.prepareStatement("INSERT INTO superhero(hero_name, real_name, creation_year, city_id) VALUES (?, ?, ?, ?)");
-            stmt1.setString(1, superhero.getHero_Name());
-            stmt1.setString(2, superhero.getReal_Name());
-            stmt1.setString(3, superhero.getCreation_year());
-            stmt1.setInt(4, city_id);
-            stmt1.executeUpdate();
-
-            PreparedStatement stmt2 = con.prepareStatement("INSERT INTO superpower(superpower) VALUES (?, ?)");
+            PreparedStatement stmt4 = con.prepareStatement("INSERT INTO superhero_superpower VALUES (?, ?)");
             for (int i = 0; i < powerList.size(); i++) {
-                stmt2.setInt(1, powerList.get(i));
-                stmt2.setInt(2, hero_id);
-                stmt2.executeUpdate();
+                stmt4.setInt(1, hero_id);
+                stmt4.setInt(2, powerList.get(i));
+                stmt4.executeUpdate();
             }
-
-            PreparedStatement stmt3 = con.prepareStatement("INSERT INTO city(city) VALUES (?)");
-            stmt3.setString(1, superhero.getCitiesDTO().getCityName());
-            stmt3.executeUpdate();
 
         } catch (Exception e) {
             System.out.println(e);
         }
     }
+
+
+
+
+
 
 }
 

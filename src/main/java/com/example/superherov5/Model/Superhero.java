@@ -4,6 +4,7 @@ import com.example.superherov5.DTO.CitiesDTO;
 import com.example.superherov5.DTO.SuperpowerDTO;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Superhero {
     private int id;
@@ -13,20 +14,29 @@ public class Superhero {
     private SuperpowerDTO superpowerDTO;
     private CitiesDTO citiesDTO;
 
-
-    //private String selectedValue;
-
     public Superhero(int id, String heroName, String realName, String creationYear) {
         this.id = id;
         this.hero_Name = heroName;
         this.real_Name = realName;
         this.creation_year = creationYear;
-        this.superpowerDTO = new SuperpowerDTO(heroName, new ArrayList<>());
+        if (superpowerDTO == null) {
+            this.superpowerDTO = new SuperpowerDTO(heroName, new ArrayList<>());
+        }
+        if (citiesDTO == null) {
+            this.citiesDTO = new CitiesDTO();
+        }
     }
 
-    public Superhero(){
-
+    public Superhero(int id, String name, List<Integer> superpowers) {
+        this.id = id;
+        this.hero_Name = name;
+        this.superpowerDTO = new SuperpowerDTO();
     }
+
+    public Superhero() {
+        this.superpowerDTO = new SuperpowerDTO();
+    }
+
 
     public Superhero(String heroName, String realName, String creation_year) {
         this.hero_Name = heroName;
@@ -42,6 +52,7 @@ public class Superhero {
 
     public Superhero(String heroName) {
         this.hero_Name = heroName;
+        this.superpowerDTO = new SuperpowerDTO();
     }
 
     public int getId() {
@@ -67,16 +78,6 @@ public class Superhero {
     public void setId(int id) {
         this.id = id;
     }
-    public void setSuperpowerDTO(SuperpowerDTO superpowerDTO) {
-        this.superpowerDTO = superpowerDTO;
-    }
-    public void setCitiesDTO(CitiesDTO citiesDTO){
-        this.citiesDTO = citiesDTO;
-    }
-
-    public CitiesDTO getCitiesDTO() {
-        return citiesDTO;
-    }
 
 
     public String getCreation_year() {
@@ -87,21 +88,53 @@ public class Superhero {
         this.creation_year = creation_year;
     }
 
+
     public SuperpowerDTO getSuperpowerDTO() {
         return superpowerDTO;
     }
 
+    public void setSuperpowerDTO(SuperpowerDTO superpowerDTO) {
+        this.superpowerDTO = superpowerDTO;
+    }
+
+    public CitiesDTO getCitiesDTO() {
+        return citiesDTO;
+    }
+
+    public void setCitiesDTO(CitiesDTO citiesDTO) {
+        this.citiesDTO = citiesDTO;
+    }
+
+
     public String getSuperpower() {
-        return String.join(",", superpowerDTO.getSuperPowers());
+        if (superpowerDTO != null) {
+            return String.join(",", superpowerDTO.getSuperPowers());
+        } else {
+            return "";
+        }
     }
 
     public void addSuperpower(String superpower) {
+        if (superpowerDTO == null) {
+            superpowerDTO = new SuperpowerDTO(hero_Name, new ArrayList<>());
+        }
         superpowerDTO.addSuperPower(superpower);
     }
 
     public void removeSuperpower(String superpower) {
-        superpowerDTO.removeSuperPower(superpower);
+        if (superpowerDTO != null) {
+            superpowerDTO.removeSuperPower(superpower);
+        }
     }
+
+    public void addCity(String city) {
+        if (citiesDTO == null) {
+            citiesDTO = new CitiesDTO();
+        }
+        citiesDTO.addCity(city);
+    }
+
+
 
     @Override
     public String toString() {
@@ -109,7 +142,6 @@ public class Superhero {
                 "Real Name: " + real_Name + "\n" +
                 "Creation year: " + creation_year;
     }
-
 
 
 }

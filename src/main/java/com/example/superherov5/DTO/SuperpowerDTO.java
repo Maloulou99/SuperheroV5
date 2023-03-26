@@ -3,6 +3,7 @@ package com.example.superherov5.DTO;
 import com.example.superherov5.Model.Superhero;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class SuperpowerDTO {
@@ -18,6 +19,12 @@ public class SuperpowerDTO {
         this.name = "";
         this.superPowers = new ArrayList<String>();
     }
+
+    public SuperpowerDTO(String power) {
+        this.name = power;
+    }
+
+
 
     public String getSelectedValue() {
         return selectedValue;
@@ -43,7 +50,7 @@ public class SuperpowerDTO {
         this.superPowers = superPowers;
     }
 
-    public void addSuperPower(String superPower) {
+    public void addSuperPower( String superPower) {
         superPowers.add(superPower);
     }
 

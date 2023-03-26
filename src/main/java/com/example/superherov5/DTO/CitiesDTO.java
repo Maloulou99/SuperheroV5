@@ -18,7 +18,9 @@ public class CitiesDTO {
     public int getCity_id() {
         return city_id;
     }
-
+    public void addCity(String city) {
+        cities.add(city);
+    }
     public String getSelectedValue() {
         return selectedValue;
     }
@@ -58,4 +60,6 @@ public class CitiesDTO {
                 ", cities=" + cities +
                 '}';
     }
+
+
 }

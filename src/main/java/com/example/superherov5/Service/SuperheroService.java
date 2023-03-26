@@ -23,9 +23,6 @@ public class SuperheroService {
         return superheroRepository.getSuperPowersForSuperhero(name);
     }
 
-    public Superhero getSuperheroById(int id){
-        return superheroRepository.getSuperheroById(id);
-    }
 
     public void createSuperhero(Superhero superhero){
         superheroRepository.createSuperhero(superhero);
@@ -35,8 +32,12 @@ public class SuperheroService {
         superheroRepository.updateSuperhero(superhero);
     }
 
-    public void deleteSuperhero(int id){
-        superheroRepository.deleteSuperhero(id);
+    public List<String> getCities(){
+        return superheroRepository.getCities();
+    }
+
+    public List<String> getPowers(){
+        return superheroRepository.getPowers();
     }
 
 }

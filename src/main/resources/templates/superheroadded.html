@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:c="">
+<head>
+  <link th:href="@{/addstyle.css}" rel="stylesheet">
+  <title>Superhero added</title>
+</head>
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Superhero Added!</h1>
+<form method="GET">
+  <p>Name: <input type="text" name="name" value="${superhero.name}" readonly></p>
+  <p>City: <input type="text" name="city" value="${superhero.city}" readonly></p>
+  <p>Superpowers:
+    <c:forEach items="${superhero.superpowers}" var="superpower">
+      <input type="text" name="superpowers" value="${superpower.name}" readonly>
+    </c:forEach>
+  </p>
+  <p><a href="/super">Back to homepage</a></p>
+</form>
+</body>
+</html>
