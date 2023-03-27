@@ -40,10 +40,18 @@ public class SuperheroService {
     }
 
     public void createSuperhero(Superhero superhero) {
-        List<String> superpowers = new ArrayList<>(superhero.getSuperpowers());
-        superhero.setSuperpowers(superpowers);
+        List<String> superpowerNames = new ArrayList<>();
+        for (String superpower : superhero.getSuperpowers()) {
+            superpowerNames.add(superpower);
+        }
+        superhero.setSuperpowers(new ArrayList<>());
+        for (String superpowerName : superpowerNames) {
+            superhero.addSuperpower(superpowerName);
+        }
         superheroRepository.createSuperhero(superhero);
     }
+
+
 
 
 

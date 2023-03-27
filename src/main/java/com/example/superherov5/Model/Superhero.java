@@ -12,50 +12,38 @@ public class Superhero {
     private String hero_name;
     private String real_name;
     private String creation_year;
-    private SuperpowerDTO superpowers;
     private CitiesDTO cities;
+    private List<SuperpowerDTO> superpowers;
 
     public Superhero() {
-        superpowers = new SuperpowerDTO();
+        superpowers = new ArrayList<>();
         cities = new CitiesDTO();
     }
 
 
-    public Superhero(int id, String heroName, String realName, String creationYear) {
+    public Superhero(int id, String heroName, String realName, String creationYear, List<String> superpowers) {
         this.id = id;
         this.hero_name = heroName;
         this.real_name = realName;
         this.creation_year = creationYear;
-        this.superpowers = new SuperpowerDTO(heroName, new ArrayList<>());
+        this.superpowers = new ArrayList<>();
+        for (String superpower : superpowers) {
+            this.superpowers.add(new SuperpowerDTO(superpower));
+        }
         this.cities = new CitiesDTO();
     }
 
-    public Superhero(int id, String heroName, List<String> superpowers) {
-        this.id = id;
-        this.hero_name = heroName;
-        this.superpowers = new SuperpowerDTO(heroName, superpowers);
-        this.cities = new CitiesDTO();
-    }
 
     public Superhero(String heroName, String realName, String creationYear, List<String> superpowers) {
-        this.hero_name = heroName;
-        this.real_name = realName;
-        this.creation_year = creationYear;
-        this.superpowers = new SuperpowerDTO(heroName, superpowers);
-        this.cities = new CitiesDTO();
+        this(0, heroName, realName, creationYear, superpowers);
     }
 
     public Superhero(String heroName, String realName) {
-        this.hero_name = heroName;
-        this.real_name = realName;
-        this.superpowers = new SuperpowerDTO(heroName, new ArrayList<>());
-        this.cities = new CitiesDTO();
+        this(heroName, realName, "", new ArrayList<>());
     }
 
     public Superhero(String heroName) {
-        this.hero_name = heroName;
-        this.superpowers = new SuperpowerDTO(heroName, new ArrayList<>());
-        this.cities = new CitiesDTO();
+        this(heroName, "", "", new ArrayList<>());
     }
 
     public Superhero(int id, String hero_name, String real_Name, String creation_year, int citiesDTO){
@@ -106,29 +94,27 @@ public class Superhero {
     }
 
     public List<String> getSuperpowers() {
-        return superpowers.getSuperPowers();
+        List<String> superpowers = new ArrayList<>();
+        for (SuperpowerDTO power : this.superpowers) {
+            superpowers.add(power.getName());
+        }
+        return superpowers;
     }
 
-    public void setSuperpowers(List<String> superpowers) {
-        this.superpowers.setSuperPowers(superpowers);
-    }
 
-    public void setSuperpowers(SuperpowerDTO superpowers) {
+    public void setSuperpowers(List<SuperpowerDTO> superpowers) {
         this.superpowers = superpowers;
     }
 
+
     public void addSuperpower(String superpower) {
         if (superpowers == null) {
-            superpowers = new SuperpowerDTO();
+            superpowers = new ArrayList<>();
         }
-        superpowers = new SuperpowerDTO(hero_name, Collections.singletonList(superpower));
+        superpowers.add(new SuperpowerDTO(superpower));
     }
 
-    public void removeSuperpower(String superpower) {
-        if (superpowers != null) {
-            superpowers.getSuperPowers().remove(superpower);
-        }
-    }
+
 
     public CitiesDTO getCities() {
         return cities;

@@ -151,8 +151,8 @@ public class SuperheroRepository {
                 superhero.setId(hero_id);
             }
 
-            List<String> superPowers = superhero.getSuperpowers();
-            for (String power : superPowers) {
+            List<String> superpowers = superhero.getSuperpowers();
+            for (String power : superpowers) {
                 PreparedStatement stmt3 = con.prepareStatement("SELECT superpower_id FROM superpower WHERE superpower = ?");
                 stmt3.setString(1, power);
                 ResultSet rs4 = stmt3.executeQuery();
