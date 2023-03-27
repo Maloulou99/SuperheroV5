@@ -28,11 +28,11 @@ public class SuperheroFormDTO {
 
     public SuperheroFormDTO(Superhero superhero) {
         this.id = superhero.getId();
-        this.heroName = superhero.getHero_Name();
-        this.realName = superhero.getReal_Name();
+        this.heroName = superhero.getHero_name();
+        this.realName = superhero.getReal_name();
         this.creationYear = superhero.getCreation_year();
-        this.city = superhero.getCitiesDTO().getCityName();
-        this.powerList = superhero.getSuperpowerDTO().getSuperPowers();
+        this.city = superhero.getCities().getCityName();
+        this.powerList = superhero.getSuperpowers();
     }
 
 

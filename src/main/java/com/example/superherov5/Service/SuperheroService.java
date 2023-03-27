@@ -6,8 +6,8 @@ import com.example.superherov5.Model.Superhero;
 import com.example.superherov5.Repository.SuperheroRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-
 @Service
 public class SuperheroService {
     private SuperheroRepository superheroRepository;
@@ -24,10 +24,6 @@ public class SuperheroService {
         return superheroRepository.getSuperPowersForSuperhero(name);
     }
 
-    public void createSuperhero(Superhero superhero){
-        superheroRepository.createSuperhero(superhero);
-    }
-
     public void updateSuperhero(Superhero superhero){
         superheroRepository.updateSuperhero(superhero);
     }
@@ -42,5 +38,13 @@ public class SuperheroService {
     public Superhero getSuperheroById(int id){
         return superheroRepository.getSuperheroById(id);
     }
+
+    public void createSuperhero(Superhero superhero) {
+        List<String> superpowers = new ArrayList<>(superhero.getSuperpowers());
+        superhero.setSuperpowers(superpowers);
+        superheroRepository.createSuperhero(superhero);
+    }
+
+
 
 }

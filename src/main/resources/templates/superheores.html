@@ -1,13 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
-
 <head>
     <link th:href="@{style.css}" rel="stylesheet">
     <meta charset="UTF-8">
     <title>Superheroes</title>
-
-
 </head>
 <body>
 <div class="container">
@@ -19,22 +15,24 @@
             <th>Hero Realname</th>
             <th>Creation Year</th>
             <th>Superpowers</th>
+            <th>Update</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="hero : ${getAllHeroes}">
-            <td th:text="${hero.hero_Name}"></td>
-            <td th:text="${hero.real_Name}"></td>
+            <td th:text="${hero.hero_name}"></td>
+            <td th:text="${hero.real_name}"></td>
             <td th:text="${hero.creation_year}"></td>
             <td>
-                <a th:href="@{super/powers(name=${hero.hero_Name})}">
+                <a th:href="@{super/powers(name=${hero.hero_name})}">
                     <button>Superpowers</button>
                 </a>
             </td>
             <td>
-                <a th:href="@{super/update(id=${hero.id})}">
+                <form th:action="@{/super/update}" method="get">
+                    <input type="hidden" th:name="id" th:value="${hero.id}" />
                     <button>Update</button>
-                </a>
+                </form>
             </td>
         </tr>
         </tbody>
@@ -42,8 +40,6 @@
     <a th:href="@{super/add}">
         <button>Add Superhero</button>
     </a>
-
 </div>
-
 </body>
 </html>

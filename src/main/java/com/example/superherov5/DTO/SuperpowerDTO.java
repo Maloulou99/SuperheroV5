@@ -9,16 +9,18 @@ import java.util.List;
 public class SuperpowerDTO {
     private String name;
     private String selectedValue;
-    private List<String> superPowers = new ArrayList<>();
+    private List<String> superPowers;
 
     public SuperpowerDTO(String name, List<String> superPowers) {
         this.name = name;
         this.superPowers = superPowers;
     }
+
     public SuperpowerDTO() {
         this.name = "";
         this.superPowers = new ArrayList<>();
     }
+
 
     public SuperpowerDTO(String power) {
         this.name = power;
@@ -40,13 +42,12 @@ public class SuperpowerDTO {
     public List<String> getSuperPowers() {
         return superPowers;
     }
+    public void setSuperPowers(List<String> superPowers) {
+        this.superPowers = superPowers;
+    }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setSuperPowers(List<String> superPowers) {
-        this.superPowers = superPowers;
     }
 
     public void addSuperPower( String superPower) {
@@ -55,10 +56,6 @@ public class SuperpowerDTO {
 
     public void removeSuperPower(String superPower) {
         superPowers.remove(superPower);
-    }
-
-    public void printSuperPowers() {
-        System.out.println(superPowers);
     }
 
 

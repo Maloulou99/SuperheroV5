@@ -1,41 +1,25 @@
 <!DOCTYPE html>
-<html  xmlns:th="http://www.thymeleaf.org" xmlns:c="">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <link th:href="@{/updatestyle.css}" rel="stylesheet">
+  <link th:href="@{updatestyle.css}" rel="stylesheet">
   <meta charset="UTF-8">
-
   <title>Update Superhero</title>
-
 </head>
+
 <body>
-
 <h1>Update Superhero</h1>
-<form action="/super/update/" method="POST">
-  <label for="heroName">Hero Name:</label>
-  <input type="text" id="heroName" name="heroName"><br><br>
-
-  <label for="realName">Real Name:</label>
-  <input type="text" id="realName" name="realName"><br><br>
-
-  <label for="creationYear">Creation Year:</label>
-  <input type="text" id="creationYear" name="creationYear"><br><br>
-
-  <label for="city"></label><select name="city" id="city">
-  <option value="">--Select a City--</option>
-  <c:forEach var="city" items="${cities}">
-    <option value="${city.name}" th:selected="${superheroForm.city == cities}"></option>
-  </c:forEach>
-</select>
-
-  <label for="superpowers">Superpowers:</label>
-  <select multiple name="superpowers" id="superpowers">
-    <c:forEach var="superpower" items="${allSuperpowers}">
-      <option value="${superpower.name}">${superpower.name}</option>
-    </c:forEach>
-  </select><br><br>
-
-  <input type="submit" value="Add Superhero">
+<form th:object="${superheroForm}" th:action="@{/update}" method="post">
+  <input type="hidden" th:field="*{id}" />
+  <div>
+    <label>Hero Name:</label>
+    <input type="text" th:field="*{hero_name}" />
+  </div>
+  <div>
+    <label>Real Name:</label>
+    <input type="text" th:field="*{real_name}" />
+  </div>
+  <div>
+    <label>Creation Year:</label>
+    <input type="text" th:field="*{creation_year}" />
+  </div>
 </form>
-
-</body>
-</html>

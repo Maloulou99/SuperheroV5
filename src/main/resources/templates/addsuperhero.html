@@ -11,11 +11,11 @@
 <form th:action="@{/super/add}" method="post" th:object="${superheroForm}">
   <p>
     <label for="heroName">Hero Name:</label>
-    <input type="text" id="heroName" name="heroName" th:field="*{hero_Name}" />
+    <input type="text" id="heroName" name="heroName" th:field="*{hero_name}" />
   </p>
   <p>
     <label for="realName">Real Name:</label>
-    <input type="text" id="realName" name="realName" th:field="*{real_Name}" />
+    <input type="text" id="realName" name="realName" th:field="*{real_name}" />
   </p>
   <p>
     <label for="creationYear">Creation Year:</label>
@@ -26,14 +26,15 @@
     <label>Superpowers:</label>
     <br/>
     <div th:each="sp : ${superpowers}">
-      <input type="checkbox" th:field="*{superpower}" th:value="${sp}" th:text="${sp}" style="margin: 6px"/>
+      <input type="checkbox" th:field="*{superpowers}" th:value="${sp}" th:text="${sp}" style="margin: 6px"/>
     </div>
     <br/>
   </div>
 
+
   <p>
     <label>City:</label>
-    <select th:field="*{citiesDTO}">
+    <select th:field="*{cities}">
       <option value="">--Please choose a city--</option>
       <option th:each="city : ${cities}" th:value="${city}" th:text="${city}"></option>
     </select>
