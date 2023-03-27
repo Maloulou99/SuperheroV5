@@ -5,7 +5,7 @@
 <head>
     <link th:href="@{style.css}" rel="stylesheet">
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Superheroes</title>
 
 
 </head>
@@ -31,19 +31,19 @@
                     <button>Superpowers</button>
                 </a>
             </td>
+            <td>
+                <a th:href="@{super/update(id=${hero.id})}">
+                    <button>Update</button>
+                </a>
+            </td>
         </tr>
-        <a th:href="@{super/add}">
-            <button>Add Superhero</button>
-        </a>
-        <a th:href="@{super/update}">
-            <button>Update Superhero</button>
-        </a>
-
-
         </tbody>
     </table>
-</div>
+    <a th:href="@{super/add}">
+        <button>Add Superhero</button>
+    </a>
 
+</div>
 
 </body>
 </html>

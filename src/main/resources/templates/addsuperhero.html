@@ -11,31 +11,32 @@
 <form th:action="@{/super/add}" method="post" th:object="${superheroForm}">
   <p>
     <label for="heroName">Hero Name:</label>
-    <input type="text" id="heroName" name="heroName" th:field="*{heroName}" />
+    <input type="text" id="heroName" name="heroName" th:field="*{hero_Name}" />
   </p>
   <p>
     <label for="realName">Real Name:</label>
-    <input type="text" id="realName" name="realName" th:field="*{realName}" />
+    <input type="text" id="realName" name="realName" th:field="*{real_Name}" />
   </p>
   <p>
     <label for="creationYear">Creation Year:</label>
-    <input type="text" id="creationYear" name="creationYear" th:field="*{creationYear}" />
+    <input type="text" id="creationYear" name="creationYear" th:field="*{creation_year}" />
   </p>
 
   <div>
     <label>Superpowers:</label>
     <br/>
     <div th:each="sp : ${superpowers}">
-      <input type="checkbox" th:field="*{powerList}" th:value="${sp}" th:text="${sp}" style="margin: 6px"/>
+      <input type="checkbox" th:field="*{superpower}" th:value="${sp}" th:text="${sp}" style="margin: 6px"/>
     </div>
     <br/>
   </div>
 
   <p>
     <label>City:</label>
-    <select th:field="*{city}">
-      <option th:each="c : ${cities}" th:value="${c}" th:text="${c}"></option>
-    </select><br/>
+    <select th:field="*{citiesDTO}">
+      <option value="">--Please choose a city--</option>
+      <option th:each="city : ${cities}" th:value="${city}" th:text="${city}"></option>
+    </select>
   </p>
 
   <p>

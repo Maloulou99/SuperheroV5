@@ -55,6 +55,13 @@ public class Superhero {
         this.citiesDTO = new CitiesDTO();
     }
 
+    public Superhero(int id, String hero_Name, String real_Name, String creation_year, int citiesDTO){
+    this.id = id;
+    this.hero_Name = hero_Name;
+    this.real_Name = real_Name;
+    this.creation_year = creation_year;
+    }
+
     public int getId() {
         return id;
     }

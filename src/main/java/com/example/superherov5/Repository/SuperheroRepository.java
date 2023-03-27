@@ -10,7 +10,7 @@ import java.sql.*;
 import java.util.*;
 
 @Repository
-public abstract class SuperheroRepository {
+public class SuperheroRepository {
     @Value("${spring.datasource.url}")
     private String url;
     @Value("${spring.datasource.username}")
@@ -19,8 +19,7 @@ public abstract class SuperheroRepository {
     private String pwd;
     private List<Superhero> superheroes = new ArrayList<>();
 
-
-    public List<String> getCities() {
+    public List<String> getAllCities() {
         List<String> cities = new ArrayList<>();
         try (Connection con = DriverManager.getConnection(url, uid, pwd)) {
             String SQL = "SELECT * FROM city";
@@ -38,26 +37,27 @@ public abstract class SuperheroRepository {
         }
     }
 
-    public List<String> getPowers() {
-        List<String> powers = new ArrayList<>();
+    public List<String> getAllSuperpowers() {
+        List<String> superpowers = new ArrayList<>();
         try (Connection con = DriverManager.getConnection(url, uid, pwd)) {
-            String SQL = "Select superpower from  superpower";
+            String SQL = "SELECT * FROM superpower";
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(SQL);
 
             while (rs.next()) {
-                String power = rs.getString("superpower");
-                powers.add(power);
+                String superpower = rs.getString("superpower");
+                superpowers.add(superpower);
             }
-            return powers;
+            return superpowers;
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    // En liste med alle superhelte, der indeholder: heroName, realName og creationYear
     public List<Superhero> getAllSuperheroes() {
+        List<Superhero> superheroes = new ArrayList<>();
+        Set<Superhero> uniqueSuperheroes = new HashSet<>(); //Ekstra liste til at fjerne duplikerede superheroes
         try (Connection con = DriverManager.getConnection(url, uid, pwd)) {
             String SQL = "SELECT * FROM superhero";
             Statement stmt = con.createStatement();
@@ -68,8 +68,9 @@ public abstract class SuperheroRepository {
                         rs.getString("real_name"),
                         rs.getString("creation_year")
                 );
-                superheroes.add(superhero);
-
+                if (uniqueSuperheroes.add(superhero)) {
+                    superheroes.add(superhero);
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -102,21 +103,20 @@ public abstract class SuperheroRepository {
 
 
     public void updateSuperhero(Superhero superhero) {
-            try (Connection con = DriverManager.getConnection(url, uid, pwd)) {
-                PreparedStatement stmt = con.prepareStatement("INSERT INTO superhero (hero_name, real_name, creation_year, city_id) VALUES (?, ?, ?, (SELECT city_id FROM city WHERE city = ?))");
-                stmt.setString(1, superhero.getHero_Name());
-                stmt.setString(2, superhero.getReal_Name());
-                stmt.setString(3, superhero.getCreation_year());
-                stmt.setString(4, superhero.getCitiesDTO().getCityName());
-                stmt.executeUpdate();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
+        try (Connection con = DriverManager.getConnection(url, uid, pwd)) {
+            PreparedStatement stmt = con.prepareStatement("INSERT INTO superhero (hero_name, real_name, creation_year, city_id) VALUES (?, ?, ?, (SELECT city_id FROM city WHERE city = ?))");
+            stmt.setString(1, superhero.getHero_Name());
+            stmt.setString(2, superhero.getReal_Name());
+            stmt.setString(3, superhero.getCreation_year());
+            stmt.setString(4, superhero.getCitiesDTO().getCityName());
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
         }
+    }
 
 
-
-        public void createSuperhero(Superhero superhero) {
+    public void createSuperhero(Superhero superhero) {
         List<Integer> powerList = new ArrayList<>();
         int hero_id = 0;
         int city_id = 0;
@@ -162,10 +162,32 @@ public abstract class SuperheroRepository {
         }
     }
 
+    public Superhero getSuperheroById(int id) {
+        try (Connection con = DriverManager.getConnection(url, uid, pwd)) {
+            String SQL = "SELECT * FROM superhero WHERE superhero_id = ?";
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
 
-    public abstract List<CitiesDTO> getAllCities();
+            if (rs.next()) {
+                Superhero superhero = new Superhero(
+                        rs.getInt("superhero_id"),
+                        rs.getString("hero_name"),
+                        rs.getString("real_name"),
+                        rs.getString("creation_year"),
+                        rs.getInt("city_id")
+                );
+                return superhero;
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-    public abstract List<SuperpowerDTO> getAllSuperpowers();
+
+
 }
 
 

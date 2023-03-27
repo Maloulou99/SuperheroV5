@@ -24,7 +24,6 @@ public class SuperheroService {
         return superheroRepository.getSuperPowersForSuperhero(name);
     }
 
-
     public void createSuperhero(Superhero superhero){
         superheroRepository.createSuperhero(superhero);
     }
@@ -33,19 +32,15 @@ public class SuperheroService {
         superheroRepository.updateSuperhero(superhero);
     }
 
-    public List<String> getCities(){
-        return superheroRepository.getCities();
-    }
-
-    public List<String> getPowers(){
-        return superheroRepository.getPowers();
-    }
-
-    public List<CitiesDTO> getAllCities() {
+    public List<String> getAllCities() {
         return superheroRepository.getAllCities();
     }
-    public List<SuperpowerDTO> getAllSuperpowers() {
+    public List<String> getAllSuperpowers() {
         return superheroRepository.getAllSuperpowers();
+    }
+
+    public Superhero getSuperheroById(int id){
+        return superheroRepository.getSuperheroById(id);
     }
 
 }

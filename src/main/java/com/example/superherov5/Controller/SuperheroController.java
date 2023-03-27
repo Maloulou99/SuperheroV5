@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/super")
@@ -25,7 +27,12 @@ public class SuperheroController {
     @GetMapping()
     public String getAllSuperheroes(Model model) {
         List<Superhero> superheroList = service.getAllSuperheroes();
-        model.addAttribute("getAllHeroes", superheroList);
+
+        // Liste til at fjerne duplikerede værdier, når man opdaterer siden.
+        Set<Superhero> uniqueSuperheroes = new HashSet<>(superheroList);
+        List<Superhero> uniqueSuperheroList = new ArrayList<>(uniqueSuperheroes);
+
+        model.addAttribute("getAllHeroes", uniqueSuperheroList);
         return "model";
     }
 
@@ -36,17 +43,15 @@ public class SuperheroController {
         return "superpower";
     }
 
-
-
     @GetMapping("/add")
     public String addSuperhero(Model model) {
-        SuperheroFormDTO superheroForm = new SuperheroFormDTO();
-        model.addAttribute("superheroForm", superheroForm);
+        Superhero superhero = new Superhero();
+        model.addAttribute("superheroForm", superhero);
 
-        List<CitiesDTO> cities = service.getAllCities();
+        List<String> cities = service.getAllCities();
         model.addAttribute("cities", cities);
 
-        List<SuperpowerDTO> superpowers = service.getAllSuperpowers();
+        List<String> superpowers = service.getAllSuperpowers();
         model.addAttribute("superpowers", superpowers);
 
         return "addsuperhero";
@@ -62,17 +67,14 @@ public class SuperheroController {
         service.createSuperhero(superhero);
         return "superheroadded";
     }
-    @GetMapping("/update")
-    public String showUpdateForm(Model model) {
-        Superhero superhero = service.getAllSuperheroes().get(0);
-        SuperheroFormDTO superheroForm = new SuperheroFormDTO(superhero);
-        model.addAttribute("superheroForm", superheroForm);
-        model.addAttribute("cities", service.getCities());
-        model.addAttribute("superpowers", service.getPowers());
+    @GetMapping("/update/{id}")
+    public String showUpdateForm(@PathVariable("id") int id, Model model) {
+        Superhero superhero = service.getSuperheroById(id);
+        model.addAttribute("superheroForm", superhero);
+        model.addAttribute("cities", service.getAllCities());
+        model.addAttribute("superpowers", service.getAllSuperpowers());
         return "updatesuper";
     }
-
-
 
     @PostMapping("/update/{id}")
     public String updateSuperhero(@PathVariable("id") int id, @ModelAttribute("superhero") Superhero superhero, Model model) {
